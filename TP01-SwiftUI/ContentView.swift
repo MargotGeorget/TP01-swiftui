@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @ObservedObject var rental: RentalViewModel
+    
     let columns = [GridItem](repeating:.init(.flexible()), count: 2)
     
     let intFormatter: NumberFormatter = {   
@@ -24,13 +26,16 @@ struct ContentView: View {
             LazyVGrid(columns: columns, alignment: .leading){
                 Group {
                     Text("Nom : ")
-                    TextField("nom", text: .constant("coucou"))
+                    TextField("nom", text: $rental.firstname)
                     
                     Text("Prenom : ")
-                    TextField("prenom", text: .constant("coucou"))
+                    TextField("prenom", text: $rental.lastname)
                     
                     Text("Nombre de machine : ")
-                    Stepper("", value: .constant(1))
+                    HStack {
+                        Spacer()
+                        Stepper("\(rental.number)", value: $rental.number)
+                    }
                     
                     HStack {
                         Spacer()
@@ -47,8 +52,8 @@ struct ContentView: View {
                     Text("Mémoire : ")
                 }
                 HStack {
-                    TextField("memoire", value: .constant(2), formatter: intFormatter)
-                        .frame(width: 15)
+                    TextField("memoire", value: $rental.memory, formatter: intFormatter)
+                        .frame(width: 30)
                     Text("Go")
                     Spacer()
                 }
@@ -58,8 +63,8 @@ struct ContentView: View {
                     Text("Durée : ")
                 }
                 HStack {
-                    TextField("duree", value: .constant(0), formatter: intFormatter )
-                        .frame(width: 15)
+                    TextField("duree", value: $rental.timelength, formatter: intFormatter )
+                        .frame(width: 30)
                     Text("heures")
                 }
                 
@@ -67,14 +72,14 @@ struct ContentView: View {
                     Spacer()
                     Text("Prix unitaire : ")
                 }.padding(.bottom, 3)
-                Text("0.0")
+                Text("\(rental.unitPrice)")
                     .padding(.bottom, 3)
                 
                 HStack {
                     Spacer()
                     Text("Prix total : ")
                 }
-                Text("0.0")
+                Text("\(rental.rentablePrice)")
                 
             }
             
@@ -86,21 +91,21 @@ struct ContentView: View {
                     .padding(.bottom, 15)
                 
                 HStack {
-                    Text("fistname")
+                    Text("\(rental.lastname)")
                         .padding(.trailing, 10)
-                    Text("lastname")
+                    Text("\(rental.firstname)")
                 }
                 
                 HStack {
-                    Text("0")
-                    Text("MacModel")
+                    Text("\(rental.number)")
+                    Text("\(rental.type.rawValue)")
                         .padding(.trailing, 10)
-                    Text("0")
+                    Text("\(rental.memory)")
                     Text("Go")
                 }
                 HStack {
                     Text("Prix total : ")
-                    Text("0.0")
+                    Text("\(rental.rentablePrice)")
                 }
             }
             Spacer()
@@ -111,6 +116,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        var model = Rental(lastname: "Djian-Martin", firstname: "Nathan", number: 0, type: MacModel.M1, memory: 2, timelength: 24)
+        ContentView(rental: RentalViewModel(model: model))
     }
 }

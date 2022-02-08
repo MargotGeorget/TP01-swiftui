@@ -65,14 +65,21 @@ class RentalViewModel : RentalDelegate, ObservableObject {
         }
     }
     
-    init(model: Rental, lastname: String, firstname: String, number: Int, type: MacModel, memory: Int, timelength: Int) {
+    var unitPrice: Double {
+        self.model.unitPrice
+    }
+    var rentablePrice: Double {
+        self.model.rentablePrice
+    }
+    
+    init(model : Rental) {
         self.model = model
-        self.lastname = lastname
-        self.firstname = firstname
-        self.number = number
-        self.type = type
-        self.memory = memory
-        self.timelength = timelength
+        self.lastname = model.lastname
+        self.firstname = model.firstname
+        self.number = model.number
+        self.type = model.type
+        self.memory = model.memory
+        self.timelength = model.timelength
     }
     
     func numberChanged(_ stepperValue: Int) {

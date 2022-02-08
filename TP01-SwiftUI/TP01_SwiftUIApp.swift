@@ -11,7 +11,7 @@ import SwiftUI
 struct TP01_SwiftUIApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(rental: RentalViewModel(model: Rental(lastname: "Djian-Martin", firstname: "Nathan", number: 0, type: MacModel.M1, memory: 2, timelength: 24)))
         }
     }
 }
